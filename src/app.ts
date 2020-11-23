@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import postRouter from './Post/routes';
 import userRouter from './User/routes';
+import authRouter from './auth/routes';
 import { errorHandler } from './utils/errorHandler';
 import dotenv from 'dotenv';
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.get('/', (req, res) => res.send('Hello World!'));
 app.use("/posts/", postRouter);
 app.use("/users/", userRouter);
+app.use("/auth/", authRouter);
 
 // Error handlers
 app.use(errorHandler);

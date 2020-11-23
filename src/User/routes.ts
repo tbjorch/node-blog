@@ -2,12 +2,10 @@ import { Router } from 'express';
 import { objectIdParamValidator } from '../utils/commonValidators';
 import { validate } from '../utils/validatorHandler';
 import { getAllUsers, getUserById, createUser, deleteUserById } from './controller';
-import { userBodyValidator } from './validator';
 
 
 const router = Router();
 
-router.post("/", userBodyValidator(), validate, createUser);
 router.get("/", getAllUsers);
 router.get("/:id", objectIdParamValidator(), validate, getUserById);
 router.delete("/:id", objectIdParamValidator(), validate, deleteUserById);

@@ -19,6 +19,6 @@ const postSchema = new Schema({
         type: String,
         required: true,
     }
-});
+}, { timestamps: true });
 
 export default model("Post", postSchema);

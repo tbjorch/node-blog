@@ -1,12 +1,13 @@
 import User, { IUser } from './model';
 import { Document } from 'mongoose';
 import { NoResourceFoundException, DuplicateValueException } from '../utils/errors/db';
+import { UserDTO } from '../types';
 
 export const createUser = async (data: IUser): Promise<Document> => {
     try {
-        const existingUser = await User.findOne({ username: data.username });
+        const existingUser = await User.findOne({ email: data.email });
         if (existingUser) {
-            throw new DuplicateValueException("Username is already taken by another user");
+            throw new DuplicateValueException("Email is already taken by another user");
         }
         const user: Document = new User(data);
         return await user.save();
@@ -32,6 +33,21 @@ export const getUserById = async (id: string): Promise<Document> => {
             return user;
         } else {
             throw new NoResourceFoundException(`No user found with id=${id}`);
+        }
+    } catch (error) {
+        console.error("Something went wrong when finding user by id. Error: " + error);
+        throw error;
+    }
+}
+
+export const getUserByEmail = async (email: string): Promise<UserDTO> => {
+    try {
+        const user: Document | null = await User.findOne({ email: email });
+        if (user) {
+            const dto: UserDTO = user.toObject();
+            return dto;
+        } else {
+            throw new NoResourceFoundException(`No user found with email=${email}`);
         }
     } catch (error) {
         console.error("Something went wrong when finding user by id. Error: " + error);
